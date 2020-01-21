@@ -197,6 +197,17 @@ function woocommerce_sslcommerz_init()
             $declineURL = $order->get_cancel_order_url();
 
             $items = $woocommerce->cart->get_cart();
+
+            #shipping method
+            $shipping_method = @array_shift($order->get_shipping_methods());
+            $shipping_method_id = $shipping_method['method_id'];
+
+            if($shipping_method_id != "") {
+                $shipping_enabled = "YES";
+            } else {
+                $shipping_enabled = "NO";
+            }
+
             $product_title = array();
 
             foreach($items as $item => $values) 
@@ -235,7 +246,7 @@ function woocommerce_sslcommerz_init()
                 'ship_postcode' => $order->shipping_postcode,
                 'currency'      => get_woocommerce_currency(),
                 'product_category'  => 'ecommerce',
-                'shipping_method'   => 'YES',
+                'shipping_method'   => $shipping_enabled,
                 'num_of_item'       => $woocommerce->cart->cart_contents_count,
                 'product_name'      => $product_name,
                 'product_profile'   => 'general'
